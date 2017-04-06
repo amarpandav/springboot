@@ -1,2 +1,33 @@
 #optional file
 #custom port server.port=8000
+
+#spring:
+#  thymeleaf:
+#    cache: false
+
+#NOT wrking logging:
+#  level:
+#    root: WARN
+#      org.springframework.security: DEBUG
+
+#Mark active profile
+spring:
+    profiles:
+      active: development
+
+#You can also create yml file / profile e.g. application-production.yml
+# triple hyphens acts as a divider between the profiles e.g.
+
+#---
+#spring:
+#profiles: development
+
+#logging:
+#  level:
+#    root: DEBUG
+#---
+
+
+lbl:
+  myNameIs: Amar Pandav
+

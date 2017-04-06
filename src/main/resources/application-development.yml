@@ -1,0 +1,6 @@
+spring:
+profiles: development
+
+logging:
+  level:
+    root: INFO

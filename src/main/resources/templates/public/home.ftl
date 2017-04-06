@@ -10,6 +10,10 @@
 
 <br />
 
+<!--
+My Name is from lbl file <h2 th:text="${myNameIs}"></h2>;
+-->
+
 <a href="/login" >Login</a>
 </body>
 </html>

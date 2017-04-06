@@ -1,0 +1,6 @@
+spring:
+profiles: production
+
+logging:
+  level:
+    root: ERROR

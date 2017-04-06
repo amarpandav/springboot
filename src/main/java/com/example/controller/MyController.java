@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.bean.LabelProperties;
 import com.example.domain.Book;
 import com.example.service.ReadingListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,11 @@ public class MyController {
     //TODO - books will come from DB
     private List<Book> books = newArrayList();
 
+    @Autowired
+    private LabelProperties labelProperties;
+
+
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home() {
         return "/public/home";
@@ -40,7 +46,8 @@ public class MyController {
 
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String homePage() {
+    public String homePage(Model model) {
+        model.addAttribute("myNameIs", labelProperties.getMyNameIs());
         return "/public/home";
     }
 
@@ -74,18 +81,6 @@ public class MyController {
     public String user() {
         return "/user/userPage";
     }
-
-    /*@RequestMapping(value = "/user/{reader}", method = RequestMethod.GET)
-    public String books(
-            @PathVariable("reader") String reader,
-            Model model) {
-        List<Book> readingList =
-                readingListRepository.findByReader(reader);
-        if (readingList != null) {
-            model.addAttribute("books", readingList);
-        }
-        return "user/books";
-    }*/
 
     @RequestMapping(value = "books", method = RequestMethod.GET)
     public String books(Model model) {

@@ -43,7 +43,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
             gas.add(new SimpleGrantedAuthority("USER"));
         }
 
-        String password = "password"; //TODO in reality
+        String password = "amar123"; //TODO in reality
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(
                 username, password, true, true, true, true, gas);
 

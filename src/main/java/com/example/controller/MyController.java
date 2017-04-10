@@ -108,4 +108,11 @@ public class MyController {
 
         return "/user/books";
     }
+
+    @RequestMapping(value = "errorPage", method = RequestMethod.GET)
+    public String errorPage() {
+        throw new IllegalStateException("Example to show how error page is shown.");
+    }
+
+
 }

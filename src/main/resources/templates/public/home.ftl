@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<h1>Home page</h1>
+<h1 class="pageTitle">Home page</h1>
 <br />
 
 <!-- below doesn't work

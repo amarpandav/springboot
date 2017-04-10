@@ -6,8 +6,7 @@
 </head>
 <body>
 
-<b>Admin page - Hey ${username}
-</b>
+<h1 class="pageTitle">Admin page - Hey ${username}</h1>
 
 <br/>
 

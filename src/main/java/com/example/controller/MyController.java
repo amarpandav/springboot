@@ -4,6 +4,7 @@ import com.example.bean.LabelProperties;
 import com.example.domain.Book;
 import com.example.service.ReadingListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,7 +38,8 @@ public class MyController {
     @Autowired
     private LabelProperties labelProperties;
 
-
+    @Value("${lbl.myNameIs}")
+    private String myNameIs;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home() {
@@ -47,6 +49,7 @@ public class MyController {
 
     @RequestMapping(value = "home", method = RequestMethod.GET)
     public String homePage(Model model) {
+        System.out.println("myNameIs :" + myNameIs);
         model.addAttribute("myNameIs", labelProperties.getMyNameIs());
         return "/public/home";
     }

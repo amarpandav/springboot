@@ -6,18 +6,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.HashMap;
-
-import static com.google.common.collect.Maps.newHashMap;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
 /**
  * Won't it be good to test rest controllers?
@@ -37,10 +36,11 @@ public class MockMvcTest {
     public void setupMockMvc() {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(webAppContext)
-                //.apply(springSecurity())
+                .apply(springSecurity())
                 .build();
     }
 
+    //Anyone can see home page
     @Test
     public void testHomePage() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/"))
@@ -50,17 +50,22 @@ public class MockMvcTest {
 
     @Test
     public void testLogin() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/login"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("/public/login"));
+    }
+
+    @Test
+    public void testPerformLogin() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/performLogin").param("username", "amar").param("password", "amar123"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("/admin/adminPage"));
     }
 
-    /* TODO getting error EL1007E: Property or field 'parameterName' cannot be found on null
+    //Use WithMockUser or WithUserDetails
     @Test
+    @WithMockUser(username = "amar", password = "amar123", roles = "ADMIN")
     public void testBooks() throws Exception {
-
-        testLogin();
-
         mockMvc.perform(MockMvcRequestBuilders.get("/books").with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("/user/books"))
@@ -70,16 +75,14 @@ public class MockMvcTest {
     }
 
     @Test
+    @WithUserDetails("Rian")
     public void testSaveBook() throws Exception {
-
-        testLogin();
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/saveBook").with(csrf()).param("id","1").param("reader","amar").param("isbn","test-isbn").param("title","test-title").param("author","test-author").param("description","test-description"))
+        mockMvc.perform(MockMvcRequestBuilders.post("/saveBook").with(csrf()).param("id", "1").param("reader", "amar").param("isbn", "test-isbn").param("title", "test-title").param("author", "test-author").param("description", "test-description"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("/user/books"))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("books"))
                 .andExpect(MockMvcResultMatchers.model().attribute("books",
                         Matchers.not(Matchers.empty())));
-    }*/
+    }
 
 }

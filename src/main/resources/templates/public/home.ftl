@@ -6,17 +6,23 @@
 </head>
 <body>
 
-<b>Home page</b>
-
+<h1>Home page</h1>
 <br />
 
 <!-- below doesn't work
 My Name is from lbl file <h2 th:text="$ {myNameIs} "></h2>;
 -->
 
+<h2>Public pages</h2>
 <a href="/login" >Login</a>
 
+<br/>
+
 <a href="/errorPage" >Error page</a>
+
+<h2>Private pages</h2>
+<a href="/books" >Read Books</a>
+
 
 </body>
 </html>

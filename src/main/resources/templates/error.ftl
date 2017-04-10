@@ -25,9 +25,11 @@ by an exception)
 -->
 <div class="errorPage">
     <span class="oops">Oops!</span><br/>
-    <p>There seems to be a problem with the page you requested
-        (<span th:text="${path}"></span>).</p>
-    <p th:text="${'Details: ' + message}"></p>
+    <p>Looks good...This is our error page.
+    </p>
+    <p>Stacktrace is -
+    </p>
+    <p th:text="${message}"></p>
 </div>
 </html>
 </html>

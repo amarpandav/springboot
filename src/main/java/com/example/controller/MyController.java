@@ -45,18 +45,24 @@ public class MyController {
     }
 
 
-    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    @RequestMapping(value = "home", method = RequestMethod.GET)
     public String homePage(Model model) {
         model.addAttribute("myNameIs", labelProperties.getMyNameIs());
         return "/public/home";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = "error", method = RequestMethod.GET)
+    public String errorPage() {
+        throw new IllegalStateException("Example to show how error page is shown.");
+    }
+
+
+    @RequestMapping(value = "login", method = RequestMethod.GET)
     public String LoginPage() {
         return "/public/login";
     }
 
-    @RequestMapping(value = "/performLogin", method = RequestMethod.POST)
+    @RequestMapping(value = "performLogin", method = RequestMethod.POST)
     public String performLogin(@ModelAttribute("username") String username, @ModelAttribute("password") String password, HttpSession session) {
         //TODO based on role go to adminPage or userPage.
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -72,12 +78,12 @@ public class MyController {
 
     }
 
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
+    @RequestMapping(value = "admin", method = RequestMethod.GET)
     public String admin() {
         return "/admin/adminPage";
     }
 
-    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    @RequestMapping(value = "user", method = RequestMethod.GET)
     public String user() {
         return "/user/userPage";
     }
@@ -109,10 +115,6 @@ public class MyController {
         return "/user/books";
     }
 
-    @RequestMapping(value = "errorPage", method = RequestMethod.GET)
-    public String errorPage() {
-        throw new IllegalStateException("Example to show how error page is shown.");
-    }
 
 
 }

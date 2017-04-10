@@ -57,25 +57,32 @@ public class MockMvcTest {
 
     @Test
     public void testPerformLogin() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/performLogin").param("username", "amar").param("password", "amar123"))
+        mockMvc.perform(MockMvcRequestBuilders.post("/performLogin").with(csrf()).param("username", "amar").param("password", "amar123"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("/admin/adminPage"));
     }
 
-    //Use WithMockUser or WithUserDetails
     @Test
-    @WithMockUser(username = "amar", password = "amar123", roles = "ADMIN")
+    public void negativeTestVisitPrivatePageWithoutlogin() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/books"))
+                .andExpect(MockMvcResultMatchers.status().isFound());
+    }
+
+    //Use WithMockUser or WithUserDetails
+    //WithMockUser do not call UserDetailServiceImpl but WithUserDetails does.
+    @Test
+    @WithMockUser(username = "amar", password = "amar123", authorities = "ADMIN")
     public void testBooks() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/books").with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("/user/books"))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("books"))
                 .andExpect(MockMvcResultMatchers.model().attribute("books",
-                        Matchers.is(Matchers.empty())));
+                        Matchers.is(Matchers.notNullValue())));
     }
 
     @Test
-    @WithUserDetails("Rian")
+    @WithUserDetails("rian")
     public void testSaveBook() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/saveBook").with(csrf()).param("id", "1").param("reader", "amar").param("isbn", "test-isbn").param("title", "test-title").param("author", "test-author").param("description", "test-description"))
                 .andExpect(MockMvcResultMatchers.status().isOk())

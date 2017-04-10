@@ -14,14 +14,14 @@ My Name is from lbl file <h2 th:text="$ {myNameIs} "></h2>;
 -->
 
 <h2>Public pages</h2>
-<a href="/login" >Login</a>
+<a href="login" >Login page</a>
 
 <br/>
 
-<a href="/errorPage" >Error page</a>
+<a href="error" >Error page</a>
 
 <h2>Private pages</h2>
-<a href="/books" >Read Books</a>
+<a href="books" >Read Books</a>
 
 
 </body>

@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<h1 class="pageTitle">Home page For Profile ${activeProfile}</h1>
+<h1 class="pageTitle">Home page For Profile ${activeProfile} and version ${componentVersion}</h1>
 <br />
 
 <!-- below doesn't work

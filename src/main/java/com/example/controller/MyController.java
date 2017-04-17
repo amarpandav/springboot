@@ -18,9 +18,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.hibernate.validator.internal.util.CollectionHelper.newArrayList;
 
@@ -46,23 +51,42 @@ public class MyController {
     @Value("${lbl.myNameIs}")
     private String myNameIs;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String home(Model model) {
-        System.out.println("Active profiles are : " + StringUtils.arrayToCommaDelimitedString(env.getActiveProfiles()));
-        System.out.println("myNameIs :" + myNameIs);
-        model.addAttribute("myNameIs", labelProperties.getMyNameIs());
-        return "/public/home";
+    @RequestMapping(method = RequestMethod.GET)
+    public ModelAndView viewApplication(HttpServletRequest request) {
+        return prepareHomePage();
     }
-
 
     @RequestMapping(value = "home", method = RequestMethod.GET)
-    public String homePage(Model model) {
-        System.out.println("Active profiles are : " + StringUtils.arrayToCommaDelimitedString(env.getActiveProfiles()));
-
-        System.out.println("myNameIs :" + myNameIs);
-        model.addAttribute("myNameIs", labelProperties.getMyNameIs());
-        return "/public/home";
+    public ModelAndView homePage() {
+        return prepareHomePage();
     }
+
+    private ModelAndView prepareHomePage() {
+        Map<String, Object> model = new HashMap<String, Object>();
+
+        /*model.put("appTitle",env.name());
+        model.put("contextPath", contextPath);
+        model.put("versionMarker", VERSION_MARKER);
+        model.put("componentVersion",componentVersion +" " + buildTime);
+        model.put("userPid",userBean.getUserPid());
+        model.put("iamLink",iamLink);
+
+        userBean.getCurrentUser();
+        model.put("userBean", userBean);*/
+
+
+        List<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
+
+        model.put("activeProfile",activeProfiles.get(0));
+        model.put("myNameIs", labelProperties.getMyNameIs());
+
+        if(activeProfiles.contains("development")) {
+            return new ModelAndView("/public/home_dev", model);
+        }
+        return new ModelAndView("/public/home", model);
+    }
+
+
 
     @RequestMapping(value = "error", method = RequestMethod.GET)
     public String errorPage() {

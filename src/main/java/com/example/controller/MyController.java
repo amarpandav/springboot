@@ -5,6 +5,7 @@ import com.example.domain.Book;
 import com.example.service.ReadingListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +27,9 @@ import static org.hibernate.validator.internal.util.CollectionHelper.newArrayLis
 @Controller
 @RequestMapping("/")
 public class MyController {
+
+    @Autowired
+    private Environment env;
 
     @Autowired
     private ReadingListRepository readingListRepository;
@@ -42,13 +47,18 @@ public class MyController {
     private String myNameIs;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String home() {
+    public String home(Model model) {
+        System.out.println("Active profiles are : " + StringUtils.arrayToCommaDelimitedString(env.getActiveProfiles()));
+        System.out.println("myNameIs :" + myNameIs);
+        model.addAttribute("myNameIs", labelProperties.getMyNameIs());
         return "/public/home";
     }
 
 
     @RequestMapping(value = "home", method = RequestMethod.GET)
     public String homePage(Model model) {
+        System.out.println("Active profiles are : " + StringUtils.arrayToCommaDelimitedString(env.getActiveProfiles()));
+
         System.out.println("myNameIs :" + myNameIs);
         model.addAttribute("myNameIs", labelProperties.getMyNameIs());
         return "/public/home";

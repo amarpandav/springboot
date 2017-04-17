@@ -1,6 +1,22 @@
 spring:
-profiles: development
+  profiles: development
+  datasource:
+    #Most of the config is not required as spring boot does it automatically.
+    # default value is "url" -> jdbc:hsqldb:mem:testdb
+    url: jdbc:hsqldb:mem:application;hsqldb.tx=mvcc;hsqldb.tx_level=read_commited;sql.syntax_ora=true;
+    username: sa
+    password:
+    #not required spring-boot will detect it automatically-> driver-class-name: org.hsqldb.jdbcDriver
+    initial-size: 2
+    max-active: 30
+    max-idle: 10
+    #jndi-name:java:jboss/datasources/customers
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
 
 logging:
   level:
     root: INFO
+

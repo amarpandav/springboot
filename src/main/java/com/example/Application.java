@@ -1,12 +1,15 @@
 package com.example;
 
-import org.springframework.boot.SpringApplication;
+import com.example.config.Profiles;
+import com.example.testdata.TestDataService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.annotation.PostConstruct;
 import org.hsqldb.util.DatabaseManagerSwing;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.env.Environment;
 
 /**
  * This class is both a bootstrap class and a configuration class.
@@ -20,6 +23,12 @@ import org.springframework.context.ConfigurableApplicationContext;
 //Unable to start EmbeddedWebApplicationContext due to missing EmbeddedServletContainerFactory bean.
 public class Application {
 
+    @Autowired
+    private Environment env;
+
+    @Autowired
+    TestDataService testDataCreator;
+
 	public static void main(String[] args) {
 	    //Bootstrap the application
 		//SpringApplication.run(Application.class, args);
@@ -32,7 +41,11 @@ public class Application {
 
     @PostConstruct
     public void getDbManager(){
-        DatabaseManagerSwing.main(
-                new String[] { "--url", "jdbc:hsqldb:mem:application", "--user", "sa", "--password", ""});
+        if (env.acceptsProfiles(Profiles.DEVELOPMENT)) {
+            testDataCreator.createTestData();
+            DatabaseManagerSwing.main(
+                    new String[] { "--url", "jdbc:hsqldb:mem:application", "--user", "sa", "--password", ""});
+
+        }
     }
 }

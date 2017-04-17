@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.bean.LabelProperties;
+import com.example.config.Profiles;
 import com.example.domain.Book;
 import com.example.service.ReadingListRepository;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -83,14 +85,11 @@ public class MyController {
         model.put("userBean", userBean);*/
 
 
-        List<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
-
-        model.put("activeProfile", activeProfiles.get(0));
+        model.put("activeProfile", StringUtils.arrayToCommaDelimitedString(env.getActiveProfiles()));
         model.put("componentVersion", getManifestVersion(request));
         model.put("myNameIs", labelProperties.getMyNameIs());
 
-
-        if (activeProfiles.contains("development")) {
+        if (env.acceptsProfiles(Profiles.DEVELOPMENT)) {
             return new ModelAndView("/public/home_dev", model);
         }
         return new ModelAndView("/public/home", model);

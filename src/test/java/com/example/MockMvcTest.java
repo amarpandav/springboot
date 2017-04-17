@@ -45,7 +45,7 @@ public class MockMvcTest {
     public void testHomePage() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("/public/home"));
+                .andExpect(MockMvcResultMatchers.view().name("/public/home_dev"));
     }
 
     @Test

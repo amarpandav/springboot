@@ -78,7 +78,7 @@ public class SeleniumTest {
     public void testHomePage() {
         webDriver.get(BASE_URL);
 
-        assertThat(pageTitleHomePage.getText()).isEqualTo("Home page");
+        assertThat(pageTitleHomePage.getText()).contains("Home page");
 
         //browser.findElementByName("author").sendKeys("BOOK AUTHOR");
     }

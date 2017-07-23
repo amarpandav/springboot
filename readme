@@ -1,6 +1,8 @@
 - run
 http://localhost:8080/
 
+-
+
 - One other thing worth noting: even though we’re building a WAR file, it may still
 be possible to run it without deploying to an application server. Assuming we don’t
 remove the main() method from Application, the WAR file produced by the build
